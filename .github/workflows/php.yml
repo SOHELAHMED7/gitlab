@@ -10,8 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  run:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
