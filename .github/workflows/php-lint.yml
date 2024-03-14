@@ -1,3 +1,14 @@
+name: Check for syntax errors on different PHP version
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
