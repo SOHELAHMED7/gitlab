@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Check for syntax errors on different PHP version
 
 on:
   push:
@@ -17,14 +17,10 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
-
+    name: PHP ${{ matrix.php-versions }} Lint on ${{ matrix.operating-system }}
 
     steps:
     - uses: actions/checkout@v3
-
-    # - name: Validate composer.json and composer.lock
-    #   run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
@@ -38,8 +34,8 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-plugins
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
+    - name: Check PHP Version
+      run: php -v
 
     - name: Run lint
       run: ./vendor/bin/phplint path src
