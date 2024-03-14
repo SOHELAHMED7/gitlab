@@ -1,0 +1,37 @@
+name: Check for syntax errors on different PHP version
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+    name: PHP ${{ matrix.php-versions }} Lint on ${{ matrix.operating-system }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+
+    - name: Check PHP Version
+      run: php -v
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-plugins
+
+    - name: Run lint
+      run: ./vendor/bin/phplint path src
+
